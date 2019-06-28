@@ -1,32 +1,33 @@
-import React, { Component } from 'react';
-import  { Form, Icon, Input, Button, } from  'antd';
-import  { reqLogin } from  '../../api';
-
-import  logo from './logo.png';
+import React from 'react';
+import {Form, Icon, Input, Button } from 'antd';
+import {reqLogin } from '../../api';
+import  { setItem } from "../../utils/storage-tools";
+import logo from './logo.png';
 import './index.less'
 
-const  Item = Form.Item;
+const Item = Form.Item;
 
-class Login extends Component {
-    login = (e) =>{
+function Login(props) {
+    const login = (e) => {
         e.preventDefault();
-        this.props.form.validateFields( async (error,valuse) =>{
-            if (!error){
-                const { username, password} = valuse;
-                const  result = await  reqLogin(username,password);
-                console.log(result);
-                if (result){
-                    this.props.history.replace('/');
+        props.form.validateFields(async (error, valuse) => {
+            if (!error) {
+
+                const {username, password} = valuse;
+                const result = await reqLogin(username, password);
+                if (result) {
+                    setItem(result);
+                    props.history.replace('/');
                 } else {
-                    this.props.form.resetFields(['password']);
+                    props.form.resetFields(['password']);
                 }
             } else {
                 console.log('登录表单校验失败：', error);
             }
         })
-    }
-    validator = (rule,value,callback) => {
-        const  name = rule.fullField === 'usrename' ? '用户名' : '密码';
+    };
+    const validator = (rule, value, callback) => {
+        const name = rule.fullField === 'usrename' ? '用户名' : '密码';
         if (!value) {
             callback(`必须输入${name}！`);
         } else if (value.length < 4) {
@@ -38,18 +39,18 @@ class Login extends Component {
         } else {
             callback();
         }
-    }
-    render() {
-        const { getFieldDecorator  } = this.props.form;
+    };
 
-        return <div className="login">
-            <header className= "login-header">
-               <img src={logo} alt="logo"/>
-               <h1>React项目：后台管理系统</h1>
+    const {getFieldDecorator} = props.form;
+
+    return <div className="login">
+            <header className="login-header">
+                <img src={logo} alt="logo"/>
+                <h1>React项目：后台管理系统</h1>
             </header>
-            <section className= "login-content">
+            <section className="login-content">
                 <h2>用户登录</h2>
-                <Form onSubmit={this.login} className="login-form">
+                <Form onSubmit={login} className="login-form">
                     <Item>
                         {
                             getFieldDecorator(
@@ -61,7 +62,7 @@ class Login extends Component {
                                         {max: 15, message: '用户名必须小于15位'},
                                         {pattern: /^[a-zA-Z_0-9]+$/, message: '用户名只能包含英文字母、数字和下划线'}*/
                                         {
-                                            validator: this.validator
+                                            validator: validator
                                         }
                                     ]
                                 }
@@ -75,15 +76,15 @@ class Login extends Component {
                             getFieldDecorator(
                                 'password',
                                 {
-                                    rules:[
+                                    rules: [
                                         {
-                                            validator:this.validator
+                                            validator: validator
                                         }
                                     ]
                                 }
                             )(
-                            <Input className="login-input" prefix={<Icon type="lock"/>} placeholder="密码"
-                                   type="password"/>
+                                <Input className="login-input" prefix={<Icon type="lock"/>} placeholder="密码"
+                                       type="password"/>
                             )
                         }
                     </Item>
@@ -93,7 +94,7 @@ class Login extends Component {
                 </Form>
             </section>
         </div>;
-  }
-}
+    }
+
 
 export default Form.create()(Login);
