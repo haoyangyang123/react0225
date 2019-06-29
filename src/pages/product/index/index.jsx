@@ -19,7 +19,7 @@ export default class Index extends Component {
   componentDidMount() {
       this.getProducts(1, 3);
   };
-    getProducts = async (pageNum,pageSize)=>{
+  getProducts = async (pageNum,pageSize)=>{
         this.setState({
             loading:true
         });
@@ -46,7 +46,7 @@ export default class Index extends Component {
   showAddProduct = () =>{
       this.props.history.push('/product/saveupdate');
   };
-  showUpdateProduct = (path,product)=>{
+  showProduct = (path, product)=>{
       return()=>{
           this.props.history.push(path,product);
       }
@@ -77,7 +77,7 @@ export default class Index extends Component {
             message.warn('请输入搜索内容~', 2);
         }
     };
-    updateProductStatus = (product) => {
+  updateProductStatus = (product) => {
         return async () => {
             // 发送请求更新状态
             const status = 3 - product.status;
