@@ -80,9 +80,7 @@ class SaveUpdate extends Component {
     this.props.form.validateFields(async( err,values)=>{
         if (!err){
             const { editorState } = this.richTextEditorRef.current.state;
-            console.log(editorState)
             const  detail = draftToHtml(convertToRaw(editorState.getCurrentContent()));
-            console.log(detail);
             const { name, desc, price, categoriesId} = values;
             let pCategoryId = '0';
             let categoryId='';
@@ -115,7 +113,7 @@ class SaveUpdate extends Component {
     const  { options } = this.state;
     const  { getFieldDecorator} = this.props.form;
     const  product = this.props.location.state;
-    const  formItemaLayout = {
+    const  formItemLayout = {
       labelCol:{
         xs:{ span:24 },
         sm:{ span:2},
@@ -126,7 +124,7 @@ class SaveUpdate extends Component {
        } ,
     };
       return <Card title={<div className='product-title'><Icon type="arrow-left" className='arrow-icon' onClick={this .goBack}/><span>添加商品</span></div>}>
-        <Form {...formItemaLayout} onSubmit={this.addProduct}>
+        <Form {...formItemLayout} onSubmit={this.addProduct}>
             <Item label = '商品名称'>
                 {
                     getFieldDecorator(
@@ -162,7 +160,7 @@ class SaveUpdate extends Component {
                     getFieldDecorator(
                         'categoriesId',
                         {
-                            rule:[
+                            rules:[
                                 { required:true,message:'请选择分类'}
                             ],
                             initialValue:this.categoriesId
@@ -177,7 +175,7 @@ class SaveUpdate extends Component {
                     getFieldDecorator(
                         'price',
                         {
-                            rule: [
+                            rules: [
                                 {required: true, message: '请输入商品价格'}
                             ],
                             initialValue:product ? product.price:''

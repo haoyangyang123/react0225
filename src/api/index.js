@@ -38,3 +38,10 @@ export const reqProducts = ( pageNum, pageSize) => ajax('/manage/product/list',{
 export const reqAddProduct = ({ name, desc, price, categoryId, pCategoryId, detail})=>ajax('/manage/product/add',{name, desc,price,categoryId,pCategoryId,detail},'POST');
 export const reqUpdateProduct =({name, desc, price, categoryId, pCategoryId, detail, _id })=>ajax('/manage/product/update',{name, desc, price, categoryId, pCategoryId, detail, _id},'POST');
 export const reqDeleteProductImg =(name,id)=>ajax('/manage/img/delete',{name,id},'POST');
+export const reqSearchProduct = ({searchType, searchContent, pageSize, pageNum}) => ajax('/manage/product/search', {[searchType]: searchContent, pageSize, pageNum});
+export const reqUpdateProductStatus = (productId, status) => ajax('/manage/product/updateStatus', {productId, status}, 'POST');
+export const reqGetRoles = () => ajax('/manage/role/list');
+export const reqAddRole = (name) => ajax('/manage/role/add', {name}, 'POST');
+export const reqUpdateRole = (_id, auth_name, menus) => ajax('/manage/role/update', {_id, auth_name, menus}, 'POST');
+export const reqGetUsers = () => ajax('/manage/user/list');
+export const reqAddUser = ({username, password, phone, email, role_id}) => ajax('/manage/user/add', {username, password, phone, email, role_id}, 'POST');
